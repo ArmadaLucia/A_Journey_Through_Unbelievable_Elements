@@ -14,20 +14,23 @@ public class DuckMove : MonoBehaviour
     public int maxtime;
     private int currenttime;
 
-    //half 3 karin volgende week donderdag
-    // velocity is een richting + een snelheid
+    public float maxVelocity;
+    public int maxParticles;
+    public ParticleSystem waterSplash;
+
+    public Animator anim;
+
+    public int extraParticles;
+    private int currentExtraParticles;
+    public int extraParticleDelay;
+
+    void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
 
     void FixedUpdate()
     {
-        //if (rb.velocity.sqrMagnitude <= forwardForce * forwardForce)
-        //{
-        //    
-        //}
-        //else
-        //{
-        //    canPressSpace = true;
-        //}
-
         rb.AddForce(0, 0, forwardForce);
 
         if (currenttime <= 0)
@@ -40,31 +43,80 @@ public class DuckMove : MonoBehaviour
             currenttime -= 1;
         }
 
-        //Debug.Log(rb.velocity.magnitude);
+        // doordraaing rotatie
+        // de kracht naar links is -1 en rechts is 1
+        // geen links of rechts is 0 en samen indrukken is 0 
+        // Torque is draaikracht (rotatie)
+        int left = 0;
+        if (Input.GetKey("a"))
+        {
+            left = 1;
+        }
+       
+        int right = 0;
+        if (Input.GetKey("d"))
+        {
+            right = 1;
+        }
 
-        int left = Input.GetKey("a") ? 1 : 0;
-        int right = Input.GetKey("d") ? 1 : 0;
         int turn = -left + right;
-        Debug.Log(turn);
+        //Debug.Log(turn);
         rb.AddTorque(transform.up * rotation * turn);
 
-
-        //if (Input.GetKey("d"))
-        //{
-        //    transform.Rotate(new Vector3(0, rotation, 0));
-        //}
-        //if (Input.GetKey("a"))
-        //{
-        //    transform.Rotate(new Vector3(0, -rotation, 0));
-        //}
         if (Input.GetKeyDown("space") && canPressSpace)
         {
-            //transform.Translate(0, 0, DuckForce);
-            Debug.Log("hi");
+            // velocity is een richting + een snelheid
+            //Debug.Log("Duck it off");
+
             rb.velocity = Vector3.zero;
-            rb.AddForce(transform.forward * DuckForce); //ForceMode.VelocityChange);
+            rb.AddForce((transform.forward * DuckForce), ForceMode.VelocityChange);
             canPressSpace = false;
             currenttime = maxtime;
+            anim.Play("DuckingOff");
+
+            currentExtraParticles = extraParticles;
+        }
+        float percentage = rb.velocity.magnitude / maxVelocity;
+        var emission = waterSplash.emission;
+        emission.rateOverTimeMultiplier = (int)(percentage * maxParticles) + currentExtraParticles;
+        //Debug.Log(emission.rateOverTimeMultiplier);
+
+        
+    }
+
+    private void Update()
+    {
+        if (currentExtraParticles > 0)
+        {
+            currentExtraParticles -= extraParticleDelay;
         }
     }
 }
+
+
+// Eerst had ik dit als Rotatie script:
+
+//if (Input.GetKey("d"))
+//{
+//    transform.Rotate(new Vector3(0, rotation, 0));
+//}
+//if (Input.GetKey("a"))
+//{
+//    transform.Rotate(new Vector3(0, -rotation, 0));
+//}
+
+// Eerst had ik dit als Duck Off script:
+
+//transform.Translate(0, 0, DuckForce);
+
+
+// Casey zn hulp:
+
+//if (rb.velocity.sqrMagnitude <= forwardForce * forwardForce)
+//{
+//    
+//}
+//else
+//{
+//    canPressSpace = true;
+//}

@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/DuckSelection.unity
+    guid: c8d799392f5a64314b9fe3c153db541a
+  - enabled: 1
+    path: Assets/Scenes/DuckJourney.unity
+    guid: a4c69758c7a714ca790c8f5497579af7
   m_configObjects: {}
