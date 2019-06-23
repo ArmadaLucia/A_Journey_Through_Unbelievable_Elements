@@ -5,7 +5,7 @@ public class DuckMove : MonoBehaviour
 
     public Rigidbody rb;
 
-    public float forwardForce;
+    public float forceforward;
     public float rotation;
     public float DuckForce;
 
@@ -24,6 +24,9 @@ public class DuckMove : MonoBehaviour
     private int currentExtraParticles;
     public int extraParticleDelay;
 
+    public AudioSource ducksource;
+    public AudioClip duckingclip;
+
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -31,7 +34,7 @@ public class DuckMove : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.AddForce(0, 0, forwardForce);
+        rb.AddForce(0, 0, forceforward);
 
         if (currenttime <= 0)
         {
@@ -73,6 +76,9 @@ public class DuckMove : MonoBehaviour
             canPressSpace = false;
             currenttime = maxtime;
             anim.Play("DuckingOff");
+            AudioSource audio = GetComponent<AudioSource>();
+            audio.PlayOneShot(duckingclip);
+            
 
             currentExtraParticles = extraParticles;
         }

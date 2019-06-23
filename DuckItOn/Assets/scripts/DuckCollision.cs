@@ -22,6 +22,16 @@ public class DuckCollision : MonoBehaviour
     public float timeStamp;
     public bool timer;
 
+    public GameObject painUI;
+
+    public AudioSource ducksource;
+    public AudioClip painduckclip;
+
+
+    public void Start()
+    {
+        ducksource.clip = painduckclip;
+    }
 
     private void Update()
     {
@@ -38,14 +48,20 @@ public class DuckCollision : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.tag == "Rots" && timer == false)
+        if (col.gameObject.tag == "Obstacle" && timer == false)
         {
             GameController.health -= 1;
+            //painUI.gameObject.SetActive(true);
+            ducksource.Play();
             timer = true;
             timeStamp = 4;
-            Debug.Log("AAH, Rots");
+            Debug.Log("AAH, obstakel!");
         }
-        
+        else
+        {
+            //painUI.gameObject.SetActive(false);
+        }
+
         //GetComponent<GameObject>().SetActive(false);
         //collisionInfo.transform.gameObject.SetActive(false);
         //GetComponent<ground>().collisionInfo.transform.gameObject.SetActive(false);

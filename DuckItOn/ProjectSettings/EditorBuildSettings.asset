@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/StartScene.unity
+    guid: 4735b8afeae124da58f82ccbe02d41ba
+  - enabled: 1
     path: Assets/Scenes/DuckSelection.unity
     guid: c8d799392f5a64314b9fe3c153db541a
   - enabled: 1
